@@ -3,20 +3,22 @@ import os
 
 def view_command():
     db_path = os.path.abspath("database.db")
-    print("Connecting to:", db_path)
+    # print("Connecting to:", db_path)
 
     conn = sqlite3.connect(db_path)
 
     cursor = conn.cursor()
 
-    print("\nWhat field would you like to view:")
-    print("1. All Faculty Members")
-    print("2. All Students")
-    print("3. All Memberships")
-    print("4. All Clubs")
-    print("5. All Member Events")
-    print("6. All Public Events")
-    print("7. All Meeting Rooms")
+    print("\nWhat would you like to view:")
+    print("1. Faculty Members")
+    print("2. Students")
+    print("3. Memberships")
+    print("4. Clubs")
+    print("5. Member Events")
+    print("6. Public Events")
+    print("7. Meeting Rooms")
+    print("8. List Students in a Club")
+    print("9. List Clubs a student is in")
 
     field = input("\nEnter choice (1-7): ").strip()
     # insertedField = ""
@@ -49,6 +51,12 @@ def view_command():
         print("You selected: Meeting Room")
         # insertedField = "Meeting_Room"
         view_meeting_room(conn, cursor)
+    elif field == "8":
+        print("You selected: List Students in a Club")
+        view_club_students(conn, cursor)
+    elif field == "9":
+        print("You selected: List Clubs a Student is in")
+        view_student_clubs(conn, cursor)
     else:
         print("Invalid choice. Please enter 1-7.")
 
@@ -102,11 +110,42 @@ def view_meeting_room(conn, cursor):
     for meetR in meetingRooms:
         print(f"Room: {meetR[0]}, Building: {meetR[1]}, Capacity: {meetR[2]}")
 
-def view_student_clubs_and_roles():
-    print()
+def view_club_students(conn, cursor):
+    club_id = input("Enter the Club ID to view its students: ").strip()
 
-def view_member_count():
-    print()
+    cursor.execute("""
+        SELECT s.Student_ID, s.Name, s.Major, s.Class
+        FROM Student s
+        JOIN Membership m ON s.Student_ID = m.Student_ID
+        WHERE m.Club_ID = ?
+    """, (club_id,))
 
-def view_member_only_events_with_student_club_info():
-    print()
+    students = cursor.fetchall()
+
+    if not students:
+        print(f"No students found in club ID {club_id}.")
+    else:
+        print(f"\nStudents in Club {club_id}:")
+        for stu in students:
+            print(f"ID: {stu[0]}, Name: {stu[1]}, Major: {stu[2]}, Class: {stu[3]}")
+
+
+def view_student_clubs(conn, cursor):
+    student_id = input("Enter the Student ID to view their clubs: ").strip()
+
+    cursor.execute("""
+        SELECT c.Club_ID, c.Club_Name, c.Description
+        FROM Club c
+        JOIN Membership m ON c.Club_ID = m.Club_ID
+        WHERE m.Student_ID = ?
+    """, (student_id,))
+
+    clubs = cursor.fetchall()
+
+    if not clubs:
+        print(f"No clubs found for student ID {student_id}.")
+    else:
+        print(f"\nClubs for Student {student_id}:")
+        for club in clubs:
+            print(f"ID: {club[0]}, Name: {club[1]}, Description: {club[2]}")
+
