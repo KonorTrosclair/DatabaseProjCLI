@@ -3,6 +3,8 @@ import sys
 import os
 from commands.add import add_command
 from commands.view import view_command
+from commands.edit import edit_command
+from commands.delete import delete_command
 
 def run_menu_loop():
     while True:
@@ -21,8 +23,10 @@ def run_menu_loop():
             add_command()
         elif choice == "2":
             print("You selected: Delete")
+            delete_command()
         elif choice == "3":
             print("You selected: Edit")
+            edit_command()
         elif choice == "4":
             print("You selected: View")
             view_command()
