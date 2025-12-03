@@ -20,7 +20,7 @@ def view_command():
     print("8. List Students in a Club")
     print("9. List Clubs a student is in")
 
-    field = input("\nEnter choice (1-7): ").strip()
+    field = input("\nEnter choice (1-9): ").strip()
     # insertedField = ""
 
     if field == "1":
@@ -101,7 +101,7 @@ def view_public_event(conn, cursor):
     cursor.execute("SELECT * FROM Public_Event")
     publicEvents = cursor.fetchall()
     for pubE in publicEvents:
-        print(f"Event ID: {pubE[0]}, Club ID: {pubE[1]}, Room: {pubE[2]}, Activity, {pubE[3]}")
+        print(f"Event ID: {pubE[0]}, Club ID: {pubE[1]}, Room: {pubE[2]}, Activity: {pubE[3]}")
 
 def view_meeting_room(conn, cursor):
     print("\nMeeting Rooms:")

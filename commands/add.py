@@ -73,11 +73,12 @@ def add_faculty(conn, cursor):
         (facultyID, facultyName, Department)
     )
     conn.commit()
+    print("\nFaculty added successfully!")
 
 def add_student(conn, cursor):
     studentID = input("\nEnter student ID: ").strip()
     studentName = input("\nEnter student name: ").strip()
-    studentMajor = input("\nEnter student marjor: ").strip()
+    studentMajor = input("\nEnter student major: ").strip()
     studentClass = input("\nEnter student class: ").strip()
 
     cursor.execute("SELECT 1 FROM Student WHERE Student_ID = ?", (studentID,))
@@ -92,6 +93,7 @@ def add_student(conn, cursor):
         (studentID, studentName, studentMajor, studentClass)
     )
     conn.commit()
+    print("\nStudent added successfully!")
 
 def add_membership(conn, cursor):
     studentID = input("\nEnter student ID: ").strip()
@@ -156,6 +158,8 @@ def add_member_event(conn, cursor):
     )
     conn.commit()
 
+    print("\nMember Event added successfully!")
+
 def add_public_event(conn, cursor):
     eventID = input("\nEnter event ID: ").strip()
     clubID = input("\nEnter club ID: ").strip()
@@ -174,6 +178,8 @@ def add_public_event(conn, cursor):
         (eventID, clubID, roomNum, activity)
     )
     conn.commit()
+
+    print("\nPublic Event added successfully!")
 
 def add_meeting_room(conn, cursor):
     roomNum = input("\nEnter room number: ").strip()
@@ -196,3 +202,5 @@ def add_meeting_room(conn, cursor):
         (roomNum, building, capacity)
     )
     conn.commit()
+
+    print("\Meeting Room added successfully!")
